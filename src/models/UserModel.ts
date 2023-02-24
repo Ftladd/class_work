@@ -10,3 +10,7 @@ async function addUser(email: string, passwordHash: string): Promise<User> {
   return newUser;
 }
 export { addUser };
+
+function getUserByEmail(): any {
+  a = 4;
+}
