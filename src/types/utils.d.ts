@@ -4,7 +4,7 @@ type DatabaseConstraintError = {
   message?: string;
 };
 
-type NewUserRequest = {
+type AuthRequest = {
   email: string;
   password: string;
 };
