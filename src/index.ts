@@ -13,5 +13,5 @@ app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
 
 app.listen(PORT, () => {
-  console.log(`Listening at http://${ip.address}:${PORT}`);
+  console.log(`Listening at http://${ip.address()}:${PORT}`);
 });
