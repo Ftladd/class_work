@@ -18,8 +18,44 @@ async function addUser(email: string, passwordHash: string): Promise<User> {
 }
 
 async function getUserByEmail(email: string): Promise<User | null> {
-  // eslint-disable-next-line @typescript-eslint/return-await
-  return await userRepository.findOne({ where: { email } });
+  const user = await userRepository.findOne({ where: { email } });
+  return user;
 }
 
-export { addUser, getUserByEmail };
+async function getAllUnverifiedUsers(): Promise<User[]> {
+  return userRepository.find({
+    select: { email: true, userId: true },
+    where: { verifiedEmail: false },
+  });
+}
+
+async function getUserById(userId: string): Promise<User | null> {
+  const user = await userRepository.findOne({
+    select: { email: true, userId: true, profileViews: true, verifiedEmail: true },
+    where: { userId },
+  });
+  return user;
+}
+
+async function getUsersByViews(minViews: number): Promise<User[]> {
+  const users = await userRepository
+    .createQueryBuilder('user')
+    .where('profileViews >= :minViews', { minViews })
+    .select(['user.email', 'user.profileViews', 'user.userId'])
+    .getMany();
+
+  return users;
+}
+
+async function allUserData(): Promise<User[]> {
+  return await userRepository.find();
+}
+
+export {
+  addUser,
+  getUserByEmail,
+  getAllUnverifiedUsers,
+  getUserById,
+  getUsersByViews,
+  allUserData,
+};

@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import argon2 from 'argon2';
-import { addUser, getUserByEmail } from '../models/UserModel';
+import { addUser, getUserByEmail, allUserData } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
 async function registerUser(req: Request, res: Response): Promise<void> {
   const { email, password } = req.body as AuthRequest;
+  console.log(req.body);
 
   // IMPORTANT: Hash the password
   const passwordHash = await argon2.hash(password);
@@ -25,6 +26,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
   const { email, password } = req.body as AuthRequest;
 
   const user = await getUserByEmail(email);
+  console.log(req.body);
 
   // Check if the user account exists for that email
   if (!user) {
@@ -46,4 +48,9 @@ async function logIn(req: Request, res: Response): Promise<void> {
   res.sendStatus(200); // 200 OK
 }
 
-export { registerUser, logIn };
+async function getAllUsers(req: Request, res: Response): Promise<void> {
+  const users = await allUserData();
+
+  res.json(users);
+}
+export { registerUser, logIn, getAllUsers };
