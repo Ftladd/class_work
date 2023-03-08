@@ -51,7 +51,7 @@ async function allUserData(): Promise<User[]> {
   return await userRepository.find();
 }
 
-async function resetProfileViews(): Promise<void> {
+/* async function resetProfileViews(): Promise<void> {
   await userRepository
     .createQueryBuilder()
     .update(User)
@@ -59,7 +59,7 @@ async function resetProfileViews(): Promise<void> {
     .where('unverfied <> true')
     .execute();
 }
-
+*/
 async function incrementProfileViews(userData: User): Promise<User> {
   const updatedUser = userData;
   updatedUser.profileViews += 1;

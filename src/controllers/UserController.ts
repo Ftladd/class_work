@@ -75,14 +75,21 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
 }
 
 async function updateUserEmail(req: Request, res: Response): Promise<void> {
-  const { email } = req.body;
+  const { newEmail } = req.body as { newEmail: string };
+  const { userId } = req.params as UserIdParam;
 
-  const user = await getUserByEmail(email);
+  const user = await getUserById(userId);
   if (!user) {
     res.sendStatus(404);
     return;
   }
-  await updateEmail(user.userId, email);
+  try {
+    await updateEmail(userId, newEmail);
+  } catch (err) {
+    console.error(err);
+    const databaseErrorMessage = parseDatabaseError(err);
+    res.status(500).json(databaseErrorMessage);
+  }
 
   res.json(user);
 }
