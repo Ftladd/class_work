@@ -51,6 +51,33 @@ async function allUserData(): Promise<User[]> {
   return await userRepository.find();
 }
 
+async function resetProfileViews(): Promise<void> {
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ profileViews: 0 })
+    .where('unverfied <> true')
+    .execute();
+}
+
+async function incrementProfileViews(userData: User): Promise<User> {
+  const updatedUser = userData;
+  updatedUser.profileViews += 1;
+
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ profileViews: updatedUser.profileViews })
+    .where({ userId: updatedUser.userId })
+    .execute();
+
+  return updatedUser;
+}
+
+async function updateEmail(userId: string, email: string): Promise<void> {
+  await userRepository.createQueryBuilder().update(User).set({ email }).where({ userId }).execute();
+}
+
 export {
   addUser,
   getUserByEmail,
@@ -58,4 +85,6 @@ export {
   getUserById,
   getUsersByViews,
   allUserData,
+  incrementProfileViews,
+  updateEmail,
 };

@@ -8,3 +8,7 @@ type AuthRequest = {
   email: string;
   password: string;
 };
+
+type UserIdParam = {
+  userId: string;
+};

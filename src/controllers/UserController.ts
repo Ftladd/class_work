@@ -1,6 +1,13 @@
 import { Request, Response } from 'express';
 import argon2 from 'argon2';
-import { addUser, getUserByEmail, allUserData } from '../models/UserModel';
+import {
+  addUser,
+  getUserByEmail,
+  allUserData,
+  getUserById,
+  incrementProfileViews,
+  updateEmail,
+} from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
 async function registerUser(req: Request, res: Response): Promise<void> {
@@ -53,4 +60,31 @@ async function getAllUsers(req: Request, res: Response): Promise<void> {
 
   res.json(users);
 }
-export { registerUser, logIn, getAllUsers };
+
+async function getUserProfileData(req: Request, res: Response): Promise<void> {
+  const { userId } = req.params as UserIdParam;
+
+  let user = await getUserById(userId);
+  if (!user) {
+    res.sendStatus(404);
+    return;
+  }
+  user = await incrementProfileViews(user);
+
+  res.json(user);
+}
+
+async function updateUserEmail(req: Request, res: Response): Promise<void> {
+  const { email } = req.body;
+
+  const user = await getUserByEmail(email);
+  if (!user) {
+    res.sendStatus(404);
+    return;
+  }
+  await updateEmail(user.userId, email);
+
+  res.json(user);
+}
+
+export { registerUser, logIn, getAllUsers, getUserProfileData, updateUserEmail };
