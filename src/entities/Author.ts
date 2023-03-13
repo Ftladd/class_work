@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Relation } from 'typeorm';
 import { Book } from './Book';
 
 @Entity()
@@ -12,6 +12,6 @@ export class Author {
   @Column({ default: 'unknown' })
   originCountry: string;
 
-  @OneToMany(() => Book, (book) => book.author)
+  @ManyToMany(() => Book, (book) => book.author)
   books: Relation<Book>[];
 }
