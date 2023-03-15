@@ -19,7 +19,7 @@ export class Book {
   title: string;
 
   @Column({ nullable: true })
-  pubYear: Date;
+  pubYear: number | undefined;
 
   @Column({ default: false })
   publicDomain: boolean;
