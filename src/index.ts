@@ -1,6 +1,8 @@
 import './config';
 import 'express-async-errors';
 import express, { Express } from 'express';
+import session from 'express-session';
+import dotenv from 'dotenv';
 import ip from 'ip';
 import connectSqlite3 from 'connect-sqlite3';
 import {
@@ -12,6 +14,7 @@ import {
 } from './controllers/UserController';
 import { addNewBook } from './controllers/BookController';
 
+dotenv.config();
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
 const SQLiteStore = connectSqlite3(session);

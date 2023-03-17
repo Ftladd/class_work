@@ -27,7 +27,7 @@ export class Book {
   @OneToMany(() => Review, (review) => review.book)
   reviews: Relation<Review>[];
 
-  @ManyToMany(() => Author, (author) => author.books)
+  @ManyToMany(() => Author, (author) => author.books, { cascade: ['insert'] })
   @JoinTable()
   author: Relation<Author>[];
 }
