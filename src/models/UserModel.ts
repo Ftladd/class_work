@@ -31,7 +31,7 @@ async function getAllUnverifiedUsers(): Promise<User[]> {
 
 async function getUserById(userId: string): Promise<User | null> {
   const user = await userRepository.findOne({
-    select: { email: true, userId: true, profileViews: true, verifiedEmail: true },
+    select: { email: true, userId: true, profileViews: true, verifiedEmail: true, reviews: true },
     where: { userId },
   });
   return user;
